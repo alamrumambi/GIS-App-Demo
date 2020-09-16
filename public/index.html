@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple GIS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- login form  -->
+    <div id="loginForm">
+        <h1>Login Form</h1>
+        <div class="alert alert-danger" role="alert">
+            A simple danger alert—check it out!
+        </div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <button type="submit" class="btn btn-primary" id="loginSubmit">Submit</button>
+        </form>
+    </div>
+
+    <!-- main form  -->
+    <div id="loadingData">
+        <p>Loading ...</p>
+    </div>
+    <div id="mainForm">
+        <!-- navbar  -->
+        <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+            <a style="cursor: pointer;" class="navbar-brand" onclick="fetchData();">GIS App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li>
+                        <button type="button" onclick="addNodes();" class="btn btn-dark">Add New Node</button>
+                    </li>
+                </ul>
+                <form id="logout" class="form-inline my-2 my-lg-0">
+                    <button onclick="signOut();" class="btn btn-outline-success my-2 my-sm-0"
+                        type="submit">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <hr class="line">
+
+        <div class="mapBox">
+            <div id="mapid"></div>
+            <div class="infoBox">
+                <p hidden id="nodeId">Id</p>
+                <ul>
+                    <li>
+                        <h2 id="nodeName">Name</h2>
+                    </li>
+                    <li>
+                        <h5 id="nodeType">Type</h5>
+                    </li>
+                    <br>
+                    <li>
+                        <p id="nodeLat">Latitude</p>
+                    </li>
+                    <li>
+                        <p id="nodeLng">Longitude</p>
+                    </li>
+                    <hr>
+                    <li>
+                        <button type="button" class="btn btn-secondary" onclick="editNode();">Edit</button> &nbsp;
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="infoBoxInput">
+                <form id="input-data">
+                    <h1 id="form-input-title">Add New Node</h1>
+                    <div class="alert alert-danger" role="alert">
+                        A simple danger alert—check it out!
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                        A simple danger alert—check it out!
+                    </div>
+                    <div class="form-group">
+                        <label for="name">name</label>
+                        <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Node's name">
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <input type="text" class="form-control" id="type" placeholder="Type">
+                    </div>
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input readonly type="text" class="form-control" id="latitude">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Latitude</label>
+                        <input readonly type="text" class="form-control" id="longitude">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="input-submit">Submit</button>
+                    <button type="button" class="btn btn-danger" id="cancel">Cancel</button>
+                    <input type="text" id="id" style="visibility: hidden;">
+                </form>
+            </div>
+        </div>
+        <hr class="line">
+        <!-- table  -->
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Latitude</th>
+                    <th scope="col">Longitude</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="allNodes">
+            </tbody>
+        </table>        
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+<script src="./index.js"></script>
+
+</html>
