@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { use } = require('../routes');
 const secretKey = 'hanyaUntukDemoAppTidakMasukKeDotenv';
 
 const generateToken = (user) => {
