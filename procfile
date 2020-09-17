@@ -1,1 +1,1 @@
-web: npm i sequelize sequelize-cli && npx sequelize db:migrate && npx sequelize db:seed:all && node app.js
+web: npm install sequelize sequelize-cli && npx sequelize db:migrate && npx sequelize db:seed:all && node app.js
