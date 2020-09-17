@@ -40,7 +40,7 @@
     <div id="mainForm">
         <!-- navbar  -->
         <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-            <a style="cursor: pointer;" class="navbar-brand" onclick="fetchData();">GIS App</a>
+            <a style="cursor: pointer;" class="navbar-brand" onclick="goHome();">GIS App</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -70,19 +70,19 @@
                         <h2 id="nodeName">Name</h2>
                     </li>
                     <li>
-                        <h5 id="nodeType">Type</h5>
+                        <h5>Type: </h5><h5 id="nodeType"></h5>
                     </li>
                     <br>
                     <li>
-                        <p id="nodeLat">Latitude</p>
+                        <p>Latitude: </p><p id="nodeLat"></p>
                     </li>
                     <li>
-                        <p id="nodeLng">Longitude</p>
+                        <p>Longitude: </p><p id="nodeLng"></p>
                     </li>
                     <hr>
                     <li>
                         <button type="button" class="btn btn-secondary" onclick="editNode();">Edit</button> &nbsp;
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteNode();">Delete</button>
                     </li>
                 </ul>
             </div>

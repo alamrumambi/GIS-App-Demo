@@ -20,7 +20,7 @@ function onMapClick(e) {
     // alert("You clicked the map at " + e.latlng);
     // console.log('latitude >> : ', e.latlng.lat);
     // console.log('longitude >> : ', e.latlng.lng);
-    if (isCreateMode === true) {
+    if (isCreateMode === true || isEditMode === true) {
         let lat = e.latlng.lat;
         let lng = e.latlng.lng;
         let zoom = e.sourceTarget._zoom < 13 ? 13 : e.sourceTarget._zoom;
@@ -136,12 +136,40 @@ function mainFormShow(nodes) {
         mymap.eachLayer((layer) => {
             layer.remove();
         });
-        if (isEditMode === false) var marker = L.marker([-0.789275, 113.921327]).addTo(mymap);
+        if (isEditMode === false) {
+            var marker = L.marker([-0.789275, 113.921327]).addTo(mymap);
+            $("#id").val("");
+            $("#name").val("");
+            $("#type").val("");
+            $("#latitude").val(-0.789275);
+            $("#longitude").val(113.921327);
+        } 
         else {
-            
+            $("#id").val($("#nodeId").text());
+            $("#name").val($("#nodeName").text());
+            $("#type").val($("#nodeType").text());
+            $("#latitude").val($("#nodeLat").text());
+            $("#longitude").val($("#nodeLng").text());
+            tiles.addTo(mymap);
+            const lat = $("#latitude").val();
+            const lng = $("#longitude").val();
+            console.log(typeof (lat));
+            console.log(lat);
+            var marker = L.marker([lat, lng]).addTo(mymap);
+            mymap.setView([lat, lng], 15);
+            // var marker = L.marker([Number($("#nodeLat").text()), Number($("#nodeLng").text())]).addTo(mymap);
         }
     }
     tiles.addTo(mymap);
+}
+
+function goHome() {
+    isCreateMode = false;
+    isEditMode = false;
+    mymap.eachLayer((layer) => {
+        layer.remove();
+    });
+    fetchData();
 }
 
 const onMarkerClick = (data) => (e) => {
@@ -149,9 +177,9 @@ const onMarkerClick = (data) => (e) => {
     mymap.setView([e.latlng.lat, e.latlng.lng], zoom);
     $("#nodeId").text(data.id);
     $("#nodeName").text(data.name);
-    $("#nodeType").text(`Type: ${data.type}`);
-    $("#nodeLat").text(`Latitude: ${data.latitude}`);
-    $("#nodeLng").text(`Longitude: ${data.longitude}`);
+    $("#nodeType").text(data.type);
+    $("#nodeLat").text(data.latitude);
+    $("#nodeLng").text(data.longitude);
     console.log(data);
 }
 
@@ -159,9 +187,9 @@ function showDetail(id, name, type, latitude, longitude) {
     // console.log('sampai >>', name);
     $("#nodeId").text(id);
     $("#nodeName").text(name);
-    $("#nodeType").text(`Type: ${type}`);
-    $("#nodeLat").text(`Latitude: ${latitude}`);
-    $("#nodeLng").text(`Longitude: ${longitude}`);
+    $("#nodeType").text(type);
+    $("#nodeLat").text(latitude);
+    $("#nodeLng").text(longitude);
     mymap.setView([latitude, longitude], 17);
 }
 
@@ -176,13 +204,20 @@ function signOut() {
 }
 
 function addNodes() {
+    $("#form-input-title").text("Add New Node");
+    $("#input-submit").text("Submit");
     isCreateMode = true;
     fetchData();
 }
 
-function editNodes() {
-    isEditMode = true;
-    fetchData();
+function editNode() {
+    if ($("#nodeId").text() === "Id") alert("Choose one node for update!");
+    else {
+        $("#form-input-title").text("Update Node");
+        $("#input-submit").text("Update");
+        isEditMode = true;
+        fetchData();
+    }
 }
 
 $("#input-data").submit((e) => {
@@ -227,7 +262,7 @@ $("#input-data").submit((e) => {
                 $(".infoBoxInput").hide();
                 $(".infoBox").show();
                 $(".alert-danger").hide();
-                isCreateMode = false;
+                isEditMode = false;
                 fetchData();
             })
             .fail(err => {
@@ -235,4 +270,39 @@ $("#input-data").submit((e) => {
                 $(".alert-danger").show();
             })
     }
+})
+
+function deleteNode() {
+    if ($("#nodeId").text() === "Id") alert("Choose one node for update!");
+    else {
+        const id = $("#nodeId").text();
+        var x = confirm("Are you sure you want to delete?");
+        if (x) {
+            const token = localStorage.getItem('token');
+            const url = `http://localhost:3000/nodes/${id}`;
+            $.ajax({
+                type: "DELETE",
+                url,
+                headers: { token }
+            })
+                .done(data => {
+                    $("#nodeId").text("Id");
+                    $("#nodeName").text("Name");
+                    $("#nodeType").text("");
+                    $("#nodeLat").text("");
+                    $("#nodeLng").text("");
+                    goHome();
+                })
+        }
+        else return false;
+    }
+}
+
+$("#cancel").click(() => {
+    $(".infoBoxInput").hide();
+    $(".infoBox").show();
+    $(".alert-danger").hide();
+    isEditMode = false;
+    isCreateMode = false;
+    fetchData();
 })
