@@ -1,4 +1,4 @@
-const { Node } = require('../models');
+const Node = require('../models/node');
 
 class Controller {
     static async showAll(req, res) {
